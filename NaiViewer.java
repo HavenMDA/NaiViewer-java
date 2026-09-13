@@ -1,3 +1,21 @@
+/*
+    NaiViewer: a cellular automata simulator.
+    Copyright (C) 2026 MDA
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 import java.awt.*;
 
 import java.awt.datatransfer.*;
@@ -31,9 +49,9 @@ class Funcs extends Frame {
 	String rulestring = "";
 	
 	enum Mode {
-		
-		Running, SettingRule;
-		
+	    
+	    Running, SettingRule;
+	    
 	}
 	
 	Mode mode = Mode.Running;
@@ -95,7 +113,7 @@ class Funcs extends Frame {
 				int key = ke.getKeyCode();
 				
 				if (mode == Mode.Running) {
-							
+						    
 					int minx = (region[0][0] < region[1][0]) ? region[0][0] : region[1][0];
 					
 					int maxx = (region[0][0] > region[1][0]) ? region[0][0] : region[1][0];
@@ -111,80 +129,80 @@ class Funcs extends Frame {
 					switch (key) {
 						
 						case KeyEvent.VK_C:
-							
-							pattern = "";
-							
-							if ((minx == maxx) || (miny == maxy)) {
-								
-								for (int x = 0; x < 200; x++) {
-									
-									for (int y = 0; y < 200; y++) {
-										   
-										pattern += world[x][y];
-										
-										pattern += " ";
-										
-									}
-									
-									pattern += "\n";
-									
-								}
-								
+						    
+						    pattern = "";
+						    
+						    if ((minx == maxx) || (miny == maxy)) {
+							    
+							    for (int x = 0; x < 200; x++) {
+							        
+							        for (int y = 0; y < 200; y++) {
+							               
+							            pattern += world[x][y];
+							            
+							            pattern += " ";
+							            
+							        }
+							        
+							        pattern += "\n";
+							        
+							    }
+							    
 							} else {
 								
-								for (int x = minx; x < maxx; x++) {
-									
-									for (int y = miny; y < maxy; y++) {
-										   
-										pattern += world[x][y];
-										
-										pattern += " ";
-										
-									}
-									
-									pattern += "\n";
-									
-								}
+							    for (int x = minx; x < maxx; x++) {
+							        
+							        for (int y = miny; y < maxy; y++) {
+							               
+							            pattern += world[x][y];
+							            
+							            pattern += " ";
+							            
+							        }
+							        
+							        pattern += "\n";
+							        
+							    }
 								
 							}
 							
-							StringSelection selection = new StringSelection(pattern);
-							
-							clipboard.setContents(selection, null);
-							
-							break;
+						    StringSelection selection = new StringSelection(pattern);
+						    
+						    clipboard.setContents(selection, null);
+						    
+						    break;
 							
 						case KeyEvent.VK_I:
-							
-							if ((minx == maxx) || (miny == maxy)) {
-								
-								for (int x = 0; x < 200; x++) {
-									
-									for (int y = 0; y < 200; y++) {
-										   
-										world[x][y] = (world[x][y] == 0) ? 1 : 0;
-										
-									}
-									
-								}
-								
+						    
+						    if ((minx == maxx) || (miny == maxy)) {
+							    
+							    for (int x = 0; x < 200; x++) {
+							        
+							        for (int y = 0; y < 200; y++) {
+							               
+							            world[x][y] = (world[x][y] == 0) ? 1 : 0;
+							            
+							        }
+							        
+							    }
+							    
 							} else {
 								
-								for (int x = minx; x < maxx; x++) {
-									
-									for (int y = miny; y < maxy; y++) {
-										   
-										world[x][y] = (world[x][y] == 0) ? 1 : 0;
-										
-									}
-									
-								}
+							    for (int x = minx; x < maxx; x++) {
+							        
+							        for (int y = miny; y < maxy; y++) {
+							               
+							            world[x][y] = (world[x][y] == 0) ? 1 : 0;
+							            
+							        }
+							        
+							    }
 								
 							}
 							
-							repaint();
-							
-							break;
+						    repaint();
+						    
+						    break;
 							
 						case KeyEvent.VK_K:
 							
@@ -209,43 +227,43 @@ class Funcs extends Frame {
 							break;
 							
 						case KeyEvent.VK_R:
-							
-							int c = 2;
-							
-							Random random = new Random();
-							
-							if ((ruletype == Ruletype.Deficient) || (ruletype == Ruletype.BSFKL)) c = 3;
-							
-							if ((minx == maxx) || (miny == maxy)) {
-								
-								for (int x = 0; x < 200; x++) {
-									
-									for (int y = 0; y < 200; y++) {
-										   
-										world[x][y] = random.nextInt(c);
-										
-									}
-									
-								}
-								
+						    
+						    int c = 2;
+						    
+						    Random random = new Random();
+						    
+						    if ((ruletype == Ruletype.Deficient) || (ruletype == Ruletype.BSFKL)) c = 3;
+						    
+						    if ((minx == maxx) || (miny == maxy)) {
+							    
+							    for (int x = 0; x < 200; x++) {
+							        
+							        for (int y = 0; y < 200; y++) {
+							               
+							            world[x][y] = random.nextInt(c);
+							            
+							        }
+							        
+							    }
+							    
 							} else {
 								
-								for (int x = minx; x < maxx; x++) {
-									
-									for (int y = miny; y < maxy; y++) {
-										   
-										world[x][y] = random.nextInt(c);
-										
-									}
-									
-								}
+							    for (int x = minx; x < maxx; x++) {
+							        
+							        for (int y = miny; y < maxy; y++) {
+							               
+							            world[x][y] = random.nextInt(c);
+							            
+							        }
+							        
+							    }
 								
 							}
 							
-							repaint();
-							
-							break;
-							
+						    repaint();
+						    
+						    break;
+						    
 						case KeyEvent.VK_T:
 							
 							mode = Mode.SettingRule;
@@ -339,197 +357,197 @@ class Funcs extends Frame {
 						case KeyEvent.VK_UP:
 							
 							cursor[0] += 199;
-							
-							cursor[0] %= 200;
-							
-							if (selecting) {
-									
-									region[1][0] = cursor[0];
-									
-									region[1][1] = cursor[1];
-									
-								} else {
-									
-									if (carrying) {
-										
-										region[0][0] = cursor[0];
-										
-										region[0][1] = cursor[1];
-										
-										region[1][0] = cursor[0];
-										
-										region[1][1] = cursor[1];
+						    
+						    cursor[0] %= 200;
+						    
+						    if (selecting) {
+						    		
+						    		region[1][0] = cursor[0];
+						    		
+						    		region[1][1] = cursor[1];
+						    		
+						    	} else {
+						    		
+						    		if (carrying) {
+						    			
+						    			region[0][0] = cursor[0];
+						    			
+						    			region[0][1] = cursor[1];
+						    			
+						    			region[1][0] = cursor[0];
+						    			
+						    			region[1][1] = cursor[1];
 									
 								}
 								
 							}
 							
-							repaint();
+						    repaint();
 							
 							break;
 							
 						case KeyEvent.VK_DOWN:
 							
 							cursor[0] += 1;
-							
-							cursor[0] %= 200;
-							
-							if (selecting) {
-									
-									region[1][0] = cursor[0];
-									
-									region[1][1] = cursor[1];
-									
-								} else {
-									
-									if (carrying) {
-										
-										region[0][0] = cursor[0];
-										
-										region[0][1] = cursor[1];
-										
-										region[1][0] = cursor[0];
-										
-										region[1][1] = cursor[1];
+						    
+						    cursor[0] %= 200;
+						    
+						    if (selecting) {
+						    		
+						    		region[1][0] = cursor[0];
+						    		
+						    		region[1][1] = cursor[1];
+						    		
+						    	} else {
+						    		
+						    		if (carrying) {
+						    			
+						    			region[0][0] = cursor[0];
+						    			
+						    			region[0][1] = cursor[1];
+						    			
+						    			region[1][0] = cursor[0];
+						    			
+						    			region[1][1] = cursor[1];
 									
 								}
 								
 							}
-							
-							repaint();
+						    
+						    repaint();
 							
 							break;
 							
 						case KeyEvent.VK_LEFT:
 							
 							cursor[1] += 199;
-							
-							cursor[1] %= 200;
-							
-							if (selecting) {
-									
-									region[1][0] = cursor[0];
-									
-									region[1][1] = cursor[1];
-									
-								} else {
-									
-									if (carrying) {
-										
-										region[0][0] = cursor[0];
-										
-										region[0][1] = cursor[1];
-										
-										region[1][0] = cursor[0];
-										
-										region[1][1] = cursor[1];
+						    
+						    cursor[1] %= 200;
+						    
+						    if (selecting) {
+						    		
+						    		region[1][0] = cursor[0];
+						    		
+						    		region[1][1] = cursor[1];
+						    		
+						    	} else {
+						    		
+						    		if (carrying) {
+						    			
+						    			region[0][0] = cursor[0];
+						    			
+						    			region[0][1] = cursor[1];
+						    			
+						    			region[1][0] = cursor[0];
+						    			
+						    			region[1][1] = cursor[1];
 									
 								}
 								
 							}
-							
-							repaint();
+						    
+						    repaint();
 							
 							break;
 							
 						case KeyEvent.VK_RIGHT:
 							
 							cursor[1] += 1;
-							
-							cursor[1] %= 200;
-							
-							if (selecting) {
-									
-									region[1][0] = cursor[0];
-									
-									region[1][1] = cursor[1];
-									
-								} else {
-									
-									if (carrying) {
-										
-										region[0][0] = cursor[0];
-										
-										region[0][1] = cursor[1];
-										
-										region[1][0] = cursor[0];
-										
-										region[1][1] = cursor[1];
+						    
+						    cursor[1] %= 200;
+						    
+						    if (selecting) {
+						    		
+						    		region[1][0] = cursor[0];
+						    		
+						    		region[1][1] = cursor[1];
+						    		
+						    	} else {
+						    		
+						    		if (carrying) {
+						    			
+						    			region[0][0] = cursor[0];
+						    			
+						    			region[0][1] = cursor[1];
+						    			
+						    			region[1][0] = cursor[0];
+						    			
+						    			region[1][1] = cursor[1];
 									
 								}
 								
 							}
-							
-							repaint();
+						    
+						    repaint();
 							
 							break;
 							
 						case KeyEvent.VK_SPACE:
-							
-							advance();
-							
-							if ((!naive) && (bconds[0] != 0) && (sconds[104] == 0)) { // Prevents strobing in B0 rules
-									
-									if ((ruletype == Ruletype.INT) || (ruletype == Ruletype.Deficient)) advance();
-									
-									if (ruletype == Ruletype.Generations) for (int n = 1; n < statenum; n++) advance();
-									
-								}
-								
-								if ((!naive) && (ruletype == Ruletype.BSFKL) && (bconds[0] != 0) && (fconds[0] != 0) && (kconds[0] != 0)) {
-									
-									advance();
-									
-								}
-								
-								if ((!naive) && (ruletype == Ruletype.BSFKL) && (bconds[0] != 0) && (sconds[104] == 0) && (fconds[0] != 0) && (kconds[0] == 0) && (lconds[0] != 0)) {
-									
-									advance();
-									
-									advance();
-									
-								}
-								
-							repaint();
-							
-							break;
-							
+						    
+						    advance();
+						    
+						    if ((!naive) && (bconds[0] != 0) && (sconds[104] == 0)) { // Prevents strobing in B0 rules
+						    		
+						    		if ((ruletype == Ruletype.INT) || (ruletype == Ruletype.Deficient)) advance();
+						    		
+						    		if (ruletype == Ruletype.Generations) for (int n = 1; n < statenum; n++) advance();
+						    		
+						    	}
+						    	
+						    	if ((!naive) && (ruletype == Ruletype.BSFKL) && (bconds[0] != 0) && (fconds[0] != 0) && (kconds[0] != 0)) {
+						    		
+						    		advance();
+						    		
+						    	}
+						    	
+						    	if ((!naive) && (ruletype == Ruletype.BSFKL) && (bconds[0] != 0) && (sconds[104] == 0) && (fconds[0] != 0) && (kconds[0] == 0) && (lconds[0] != 0)) {
+						    		
+						    		advance();
+						    		
+						    		advance();
+						    		
+						    	}
+						    	
+						    repaint();
+						    
+						    break;
+						    
 						case KeyEvent.VK_BACK_SPACE:
-							
-							if ((minx == maxx) || (miny == maxy)) {
-								
-								world = new int[200][200];
-								
+						    
+						    if ((minx == maxx) || (miny == maxy)) {
+							    
+							    world = new int[200][200];
+							    
 							} else {
 								
-								for (int x = minx; x < maxx; x++) {
-									
-									for (int y = miny; y < maxy; y++) {
-										   
-										world[x][y] = 0;
-										
-									}
-									
-								}
+							    for (int x = minx; x < maxx; x++) {
+							        
+							        for (int y = miny; y < maxy; y++) {
+							               
+							            world[x][y] = 0;
+							            
+							        }
+							        
+							    }
 								
 							}
-							
-							repaint();
-							
-							break;
-							
+						    
+						    repaint();
+						    
+						    break;
+						    
 						case KeyEvent.VK_ENTER:
-							
-							world[cursor[0]][cursor[1]]++;
-							
-							world[cursor[0]][cursor[1]] %= statenum;
-							
-							// repaint(cursor[0] * 4, cursor[1] * 4, 4, 4);
-							
-							repaint();
-							
-							break;
-							
+						    
+						    world[cursor[0]][cursor[1]]++;
+						    
+						    world[cursor[0]][cursor[1]] %= statenum;
+						    
+						    // repaint(cursor[0] * 4, cursor[1] * 4, 4, 4);
+						    
+						    repaint();
+						    
+						    break;
+						    
 						case KeyEvent.VK_SHIFT:
 							
 							if (selecting) {
@@ -1053,303 +1071,303 @@ class Funcs extends Frame {
 		// dict is a 256-element lookup table mapping neighborhood configurations to Hensel conditions
 		
 		int[] dict = {0, 13, 14, 29, 13, 26, 29, 43, 14, 29, 27, 42, 28, 44, 47, 55, 14, 28, 27, 47, 29, 44, 42, 55, 30, 48, 40, 61, 48, 56, 61, 69, 13, 26, 28, 44, 31, 39, 46, 57, 29, 43, 47, 55, 46, 57, 63, 68, 28, 45, 41, 54, 46, 58, 59, 73, 48, 62, 60, 70, 64, 74, 72, 81, 14, 28, 30, 48, 28, 45, 48, 62, 27, 47, 40, 61, 41, 54, 60, 70, 27, 41, 40, 60, 47, 54, 61, 70, 40, 60, 53, 65, 60, 71, 65, 78, 29, 44, 48, 56, 46, 58, 64, 74, 42, 55, 61, 69, 59, 73, 72, 81, 47, 54, 60, 71, 63, 67, 72, 80, 61, 70, 65, 78, 72, 80, 83, 91, 13, 31, 28, 46, 26, 39, 44, 57, 28, 46, 41, 59, 45, 58, 54, 73, 29, 46, 47, 63, 43, 57, 55, 68, 48, 64, 60, 72, 62, 74, 70, 81, 26, 39, 45, 58, 39, 52, 58, 66, 44, 57, 54, 73, 58, 66, 67, 79, 44, 58, 54, 67, 57, 66, 73, 79, 56, 74, 71, 80, 74, 82, 80, 92, 29, 46, 48, 64, 44, 58, 56, 74, 47, 63, 60, 72, 54, 67, 71, 80, 42, 59, 61, 72, 55, 73, 69, 81, 61, 72, 65, 83, 70, 80, 78, 91, 43, 57, 62, 74, 57, 66, 74, 82, 55, 68, 70, 81, 73, 79, 80, 92, 55, 73, 70, 80, 68, 79, 81, 92, 69, 81, 78, 91, 81, 92, 91, 104};
-		
-		int[][] neigh = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}};
-		
-		int[][] next = new int[200][200];
-		
-		for (int x = 0; x < 200; x++) {
-			
-			for (int y = 0; y < 200; y++) {
-				
-				int xx, yy;
-				
-				int neighs = 0;
-				
-				int binary = 0;
-				
-				int sb = 0; // For deficient rules
-				
-				for (int n = 0; n < 8; n++) {
-					
-					xx = x + neigh[n][0];
-					
-					yy = y + neigh[n][1];
-					
-					if (!(this.naive)) {
-							
-							xx += 200;
-							
-							yy += 200;
-							
-							xx %= 200;
-							
-							yy %= 200;
-							
-						}
-					
-					binary *= 2;
-					
-					sb *= 2;
-					
-					if ((xx >= 200) || (yy >= 200) || (xx < 0) || (yy < 0)) continue;
-					
-					if (this.ruletype == Ruletype.Generations) {
-							
-							if (this.world[xx][yy] == 1) {
-								
-								binary++; // No neighs needed here
-								
-							}
-							
-						} else if (this.ruletype == Ruletype.Deficient) {
-							
-							if (this.world[xx][yy] != 0) binary++;
-								
-							if (this.world[xx][yy] == 2) sb++;
-							
-						} else if (this.ruletype == Ruletype.BSFKL) {
-							
-							if (this.world[xx][yy] == 1) binary++;
-								
-							if (this.world[xx][yy] == 2) sb++;
-							
-						} else {
-							
-							if (this.world[xx][yy] != 0) {
-								
-								binary++;
-								
-								neighs++;
-								
-							}
-							
-						}
-						
-				}
-				
-				if (this.ruletype == Ruletype.INT) {	
-	  			  
-						if (this.naive) {
-								
-								if (this.color) {
-									
-										if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) {
-											
-											this.world[x][y] = neighs + 1;
-												
-											continue; // Necessary to prevent the next condition from being evaluated if this one is true
-											
-										}
-										
-										if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] != 0)) {
-											
-											this.world[x][y] = neighs + 1;
-											
-											continue;
-											
-										}
-										
-										if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] == 0)) this.world[x][y] = 0;
-									
-								} else {
-									
-										if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) {
-											
-											this.world[x][y] = 1;
-												
-											continue; // Necessary to prevent the next condition from being evaluated if this one is true
-											
-										}
-										
-										if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] == 0)) this.world[x][y] = 0;
-									
-								}
-								
-							} else {
-								
-								if (this.color) {
-									
-									if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) next[x][y] = neighs + 1;
-									
-										if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] != 0)) next[x][y] = neighs + 1;
-									
-								} else {
-									
-									if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) next[x][y] = 1;
-									
-										if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
-									
-								}
-								
-							}
-					
-					}
-					
-					if (this.ruletype == Ruletype.Generations) {
-						
-						if (naive) {
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) {
-										
-										this.world[x][y] = 1;
-											
-										continue; // Necessary to prevent the next condition from being evaluated if this one is true
-										
-									}
-									
-									if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] == 0)) {
-										
-										if (this.world[x][y] == (this.statenum - 1)) this.world[x][y] = 0;
-										
-										else this.world[x][y]++;
-										
-										continue;
-										
-									}
-									
-									if (this.world[x][y] > 1) {
-										
-										if (this.world[x][y] == (this.statenum - 1)) this.world[x][y] = 0;
-										
-										else this.world[x][y]++;
-										
-									}
-									
-							} else {
-								
-								if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) next[x][y] = 1;
-								
-								if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
-								
-								if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] == 0)) {
-										
-										if (this.world[x][y] == (this.statenum - 1)) next[x][y] = 0;
-										
-										else next[x][y] = world[x][y] + 1;
-										
-									}
-									
-								if (this.world[x][y] > 1) {
-									
-										if (this.world[x][y] == (this.statenum - 1)) next[x][y] = 0;
-										
-										else next[x][y] = world[x][y] + 1;
-										
-									}
-									
-							}
-						
-					}
-					
-					if (this.ruletype == Ruletype.Deficient) {
-						
-						if (naive) {
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] == 0)) {
-								
-								this.world[x][y] = 1;
-								
-								continue;
-								
-							}
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] != 0) && (sb == 0)) {
-								
-								this.world[x][y] = 2;
-								
-								continue;
-								
-							}
-							
-							if ((this.world[x][y] == 2) && (this.sconds[dict[binary]] != 0)) {
-								
-								this.world[x][y] = 1;
-								
-								continue;
-								
-							}
-							
-							if ((this.world[x][y] == 2) && (this.sconds[dict[binary]] == 0)) {
-								
-								this.world[x][y] = 0;
-								
-								continue;
-								
-							}
-							
-							if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] == 0)) this.world[x][y] = 0;
-							
-						} else {
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] == 0)) next[x][y] = 1;
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] != 0) && (sb == 0)) next[x][y] = 2;
-							
-							if ((this.world[x][y] == 2) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
-							
-							if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
-							
-						}
-						
-					}
-					
-					if (this.ruletype == Ruletype.BSFKL) {
-						
-						if (naive) {
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.fconds[dict[sb]] != 0)) {
-								
-								this.world[x][y] = 1;
-								
-								continue;
-								
-							}
-							
-							if ((this.world[x][y] == 1) && (this.kconds[dict[sb]] != 0)) {
-								
-								this.world[x][y] = 0;
-								
-								continue;
-								
-							} else if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) {
-								
-								continue;
-								
-							} else if (this.world[x][y] == 1) {
-								
-								this.world[x][y] = 2;
-								
-								continue;
-								
-							}
-							
-							if ((this.world[x][y] == 2) && (this.lconds[dict[binary]] != 0)) this.world[x][y] = 0;
-							
-						} else {
-							
-							if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.fconds[dict[sb]] != 0)) next[x][y] = 1;
-							
-							if ((this.world[x][y] == 1) && (this.kconds[dict[sb]] != 0)) next[x][y] = 0;
-							
-							else if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
-							
-							else if (this.world[x][y] == 1) next[x][y] = 2;
-							
-							if ((this.world[x][y] == 2) && (this.lconds[dict[binary]] != 0)) next[x][y] = 0;
-							
-							else if (this.world[x][y] == 2) next[x][y] = 2;
-							
-						}
-						
-					}
-					
-			}
-			
-		}
-		
-		if (!(this.naive)) this.world = next;
-		
+	    
+	    int[][] neigh = {{1, 1}, {1, 0}, {1, -1}, {0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}};
+	    
+	    int[][] next = new int[200][200];
+	    
+	    for (int x = 0; x < 200; x++) {
+	        
+	        for (int y = 0; y < 200; y++) {
+	            
+	            int xx, yy;
+	            
+	            int neighs = 0;
+	            
+	            int binary = 0;
+	            
+	            int sb = 0; // For deficient rules
+	            
+	            for (int n = 0; n < 8; n++) {
+	                
+	                xx = x + neigh[n][0];
+	                
+	                yy = y + neigh[n][1];
+	                
+	                if (!(this.naive)) {
+	                		
+	                		xx += 200;
+	                		
+	                		yy += 200;
+	                		
+	                		xx %= 200;
+	                		
+	                		yy %= 200;
+	                		
+	                	}
+	                
+	                binary *= 2;
+	                
+	                sb *= 2;
+	                
+	                if ((xx >= 200) || (yy >= 200) || (xx < 0) || (yy < 0)) continue;
+	                
+	                if (this.ruletype == Ruletype.Generations) {
+	                		
+	                		if (this.world[xx][yy] == 1) {
+	                			
+	                			binary++; // No neighs needed here
+	                			
+	                		}
+	                		
+	                	} else if (this.ruletype == Ruletype.Deficient) {
+	                		
+	                		if (this.world[xx][yy] != 0) binary++;
+	                			
+	                		if (this.world[xx][yy] == 2) sb++;
+	                		
+	                	} else if (this.ruletype == Ruletype.BSFKL) {
+	                		
+	                		if (this.world[xx][yy] == 1) binary++;
+	                			
+	                		if (this.world[xx][yy] == 2) sb++;
+	                		
+	                	} else {
+	                		
+	                		if (this.world[xx][yy] != 0) {
+	                			
+	                			binary++;
+	                			
+	                			neighs++;
+	                			
+	                		}
+	                		
+	                	}
+	                	
+	            }
+	            
+	            if (this.ruletype == Ruletype.INT) {	
+	  	          
+	    		        if (this.naive) {
+	    		        		
+	    		        		if (this.color) {
+	    		        			
+	    		    		    		if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) {
+	    		    		    			
+	    		    		    			this.world[x][y] = neighs + 1;
+	    		    			    			
+	    		    		    			continue; // Necessary to prevent the next condition from being evaluated if this one is true
+	    		    		    			
+	    		    		    		}
+	    		    		    		
+	    		    		    		if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] != 0)) {
+	    		    		    			
+	    		    		    			this.world[x][y] = neighs + 1;
+	    		    		    			
+	    		    		    			continue;
+	    		    		    			
+	    		    		    		}
+	    		    		    		
+	    		    		    		if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] == 0)) this.world[x][y] = 0;
+	    		        			
+	    		        		} else {
+	    		        			
+	    		    		    		if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) {
+	    		    		    			
+	    		    		    			this.world[x][y] = 1;
+	    		    			    			
+	    		    		    			continue; // Necessary to prevent the next condition from being evaluated if this one is true
+	    		    		    			
+	    		    		    		}
+	    		    		    		
+	    		    		    		if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] == 0)) this.world[x][y] = 0;
+	    		        			
+	    		        		}
+	    		        		
+	    		        	} else {
+	    		        		
+	    		        		if (this.color) {
+	    		        			
+	    		        			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) next[x][y] = neighs + 1;
+	    		        			
+	    		    		    		if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] != 0)) next[x][y] = neighs + 1;
+	    		        			
+	    		        		} else {
+	    		        			
+	    		        			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) next[x][y] = 1;
+	    		        			
+	    		    		    		if ((this.world[x][y] != 0) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
+	    		        			
+	    		        		}
+	    		        		
+	    		        	}
+	            	
+	            	}
+	            	
+	            	if (this.ruletype == Ruletype.Generations) {
+	            		
+	            		if (naive) {
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) {
+	    		    		    		
+	    		    		    		this.world[x][y] = 1;
+	    		    			    		
+	    		    		    		continue; // Necessary to prevent the next condition from being evaluated if this one is true
+	    		    		    		
+	    		    		    	}
+	    		    		    	
+	    		    		    	if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] == 0)) {
+	    		    		    		
+	    		    		    		if (this.world[x][y] == (this.statenum - 1)) this.world[x][y] = 0;
+	    		    		    		
+	    		    		    		else this.world[x][y]++;
+	    		    		    		
+	    		    		    		continue;
+	    		    		    		
+	    		    		    	}
+	    		    		    	
+	    		    		    	if (this.world[x][y] > 1) {
+	    		    		    		
+	    		    		    		if (this.world[x][y] == (this.statenum - 1)) this.world[x][y] = 0;
+	    		    		    		
+	    		    		    		else this.world[x][y]++;
+	    		    		    		
+	    		    		    	}
+	    		    		    	
+	    		    		} else {
+	    		    			
+	    		    			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0)) next[x][y] = 1;
+	    		    			
+	    		    			if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
+	    		    			
+	    		    			if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] == 0)) {
+	    		    		    		
+	    		    		    		if (this.world[x][y] == (this.statenum - 1)) next[x][y] = 0;
+	    		    		    		
+	    		    		    		else next[x][y] = world[x][y] + 1;
+	    		    		    		
+	    		    		    	}
+	    		    		    	
+	    		    			if (this.world[x][y] > 1) {
+	    		    				
+	    		    		    		if (this.world[x][y] == (this.statenum - 1)) next[x][y] = 0;
+	    		    		    		
+	    		    		    		else next[x][y] = world[x][y] + 1;
+	    		    		    		
+	    		    		    	}
+	    		    		    	
+	    		    		}
+	            		
+	            	}
+	            	
+	            	if (this.ruletype == Ruletype.Deficient) {
+	            		
+	            		if (naive) {
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] == 0)) {
+	            				
+	            				this.world[x][y] = 1;
+	            				
+	            				continue;
+	            				
+	            			}
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] != 0) && (sb == 0)) {
+	            				
+	            				this.world[x][y] = 2;
+	            				
+	            				continue;
+	            				
+	            			}
+	            			
+	            			if ((this.world[x][y] == 2) && (this.sconds[dict[binary]] != 0)) {
+	            				
+	            				this.world[x][y] = 1;
+	            				
+	            				continue;
+	            				
+	            			}
+	            			
+	            			if ((this.world[x][y] == 2) && (this.sconds[dict[binary]] == 0)) {
+	            				
+	            				this.world[x][y] = 0;
+	            				
+	            				continue;
+	            				
+	            			}
+	            			
+	            			if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] == 0)) this.world[x][y] = 0;
+	            			
+	            		} else {
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] == 0)) next[x][y] = 1;
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.dconds[dict[binary]] != 0) && (sb == 0)) next[x][y] = 2;
+	            			
+	            			if ((this.world[x][y] == 2) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
+	            			
+	            			if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
+	            			
+	            		}
+	            		
+	            	}
+	            	
+	            	if (this.ruletype == Ruletype.BSFKL) {
+	            		
+	            		if (naive) {
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.fconds[dict[sb]] != 0)) {
+	            				
+	            				this.world[x][y] = 1;
+	            				
+	            				continue;
+	            				
+	            			}
+	            			
+	            			if ((this.world[x][y] == 1) && (this.kconds[dict[sb]] != 0)) {
+	            				
+	            				this.world[x][y] = 0;
+	            				
+	            				continue;
+	            				
+	            			} else if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) {
+	            				
+	            				continue;
+	            				
+	            			} else if (this.world[x][y] == 1) {
+	            				
+	            				this.world[x][y] = 2;
+	            				
+	            				continue;
+	            				
+	            			}
+	            			
+	            			if ((this.world[x][y] == 2) && (this.lconds[dict[binary]] != 0)) this.world[x][y] = 0;
+	            			
+	            		} else {
+	            			
+	            			if ((this.world[x][y] == 0) && (this.bconds[dict[binary]] != 0) && (this.fconds[dict[sb]] != 0)) next[x][y] = 1;
+	            			
+	            			if ((this.world[x][y] == 1) && (this.kconds[dict[sb]] != 0)) next[x][y] = 0;
+	            			
+	            			else if ((this.world[x][y] == 1) && (this.sconds[dict[binary]] != 0)) next[x][y] = 1;
+	            			
+	            			else if (this.world[x][y] == 1) next[x][y] = 2;
+	            			
+	            			if ((this.world[x][y] == 2) && (this.lconds[dict[binary]] != 0)) next[x][y] = 0;
+	            			
+	            			else if (this.world[x][y] == 2) next[x][y] = 2;
+	            			
+	            		}
+	            		
+	            	}
+	            	
+	        }
+	        
+	    }
+	    
+	    if (!(this.naive)) this.world = next;
+	    
 	}
 	
 	Color avg(Color c1, Color c2) {
@@ -1956,7 +1974,7 @@ class Funcs extends Frame {
 					
 					Color[] colors = {Color.black, Color.white, Color.gray, Color.red, Color.green, Color.blue, Color.orange, new Color(128, 000, 255), Color.yellow, Color.magenta};
 					
-						for (int x = 0; x < 200; x++) {
+			    		for (int x = 0; x < 200; x++) {
 						
 						for (int y = 0; y < 200; y++) {
 							
@@ -1990,7 +2008,7 @@ class Funcs extends Frame {
 						
 						Color[] colors = {Color.black, Color.white};
 						
-							for (int x = 0; x < 200; x++) {
+				    		for (int x = 0; x < 200; x++) {
 							
 							for (int y = 0; y < 200; y++) {
 								
@@ -2024,7 +2042,7 @@ class Funcs extends Frame {
 				
 				if (this.ruletype == Ruletype.Generations) {
 					
-						for (int x = 0; x < 200; x++) {
+				    	for (int x = 0; x < 200; x++) {
 						
 						for (int y = 0; y < 200; y++) {
 							
@@ -2058,7 +2076,7 @@ class Funcs extends Frame {
 					
 					Color[] colors = {Color.black, Color.white, Color.yellow};
 					
-						for (int x = 0; x < 200; x++) {
+				    	for (int x = 0; x < 200; x++) {
 						
 						for (int y = 0; y < 200; y++) {
 							
@@ -2092,7 +2110,7 @@ class Funcs extends Frame {
 					
 					Color[] colors = {Color.black, new Color(0, 192, 255), Color.red};
 					
-						for (int x = 0; x < 200; x++) {
+				    	for (int x = 0; x < 200; x++) {
 						
 						for (int y = 0; y < 200; y++) {
 							
@@ -2139,7 +2157,7 @@ class Funcs extends Frame {
 		}
 		
 	}
-	
+		
 }
 
 class NaiViewer {
