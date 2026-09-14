@@ -108,6 +108,8 @@ class Funcs extends Frame {
 		
 		addKeyListener(new KeyAdapter() {
 			
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			
 			public void keyPressed(KeyEvent ke) {
 				
 				int key = ke.getKeyCode();
@@ -124,8 +126,6 @@ class Funcs extends Frame {
 					
 					String pattern;
 					
-					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-					
 					switch (key) {
 						
 						case KeyEvent.VK_C:
@@ -134,35 +134,11 @@ class Funcs extends Frame {
 						    
 						    if ((minx == maxx) || (miny == maxy)) {
 							    
-							    for (int x = 0; x < 200; x++) {
-							        
-							        for (int y = 0; y < 200; y++) {
-							               
-							            pattern += world[x][y];
-							            
-							            pattern += " ";
-							            
-							        }
-							        
-							        pattern += "\n";
-							        
-							    }
+							    pattern = makerle(0, 0, 200, 200);
 							    
 							} else {
 								
-							    for (int x = minx; x < maxx; x++) {
-							        
-							        for (int y = miny; y < maxy; y++) {
-							               
-							            pattern += world[x][y];
-							            
-							            pattern += " ";
-							            
-							        }
-							        
-							        pattern += "\n";
-							        
-							    }
+							    pattern = makerle(minx, miny, maxx, maxy);
 								
 							}
 							
@@ -226,6 +202,12 @@ class Funcs extends Frame {
 							
 							break;
 							
+						case KeyEvent.VK_Q:
+							
+							System.exit(0);
+							
+							break;
+							
 						case KeyEvent.VK_R:
 						    
 						    int c = 2;
@@ -284,47 +266,7 @@ class Funcs extends Frame {
 									
 									pattern = (String) clipboard.getData(DataFlavor.stringFlavor);
 									
-									for (int n = 0; n < pattern.length(); n++) {
-										
-										char cc = pattern.charAt(n);
-										
-										switch (cc) {
-											
-											case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
-												
-												state *= 10;
-												
-												state += (cc - '0');
-												
-											}
-											
-											case ' ' -> {
-												
-												if (color) world[cy][cx] = (state == 0) ? 0 : 1;
-												
-												else world[cy][cx] = (state >= statenum) ? statenum - 1 : state;
-												
-												state = 0;
-												
-												cx++;
-												
-												cx %= 200;
-												
-											}
-											
-											case '\n' -> {
-												
-												cy++;
-												
-												cy %= 200;
-												
-												cx = cursor[1];
-												
-											}
-											
-										}
-										
-									}
+									makeworld(pattern);
 									
 								}
 								
@@ -335,6 +277,46 @@ class Funcs extends Frame {
 							repaint();
 							
 							break;
+							
+						case KeyEvent.VK_X:
+						    
+						    pattern = "";
+						    
+						    if ((minx == maxx) || (miny == maxy)) {
+							    
+							    pattern = makerle(0, 0, 200, 200);
+							    
+							} else {
+								
+							    pattern = makerle(minx, miny, maxx, maxy);
+								
+							}
+						    
+						    if ((minx == maxx) || (miny == maxy)) {
+							    
+							    world = new int[200][200];
+							    
+							} else {
+								
+							    for (int x = minx; x < maxx; x++) {
+							        
+							        for (int y = miny; y < maxy; y++) {
+							               
+							            world[x][y] = 0;
+							            
+							        }
+							        
+							    }
+								
+							}
+						    
+						    repaint();
+							
+						    StringSelection selection2 = new StringSelection(pattern);
+						    
+						    clipboard.setContents(selection2, null);
+						    
+						    break;
 							
 						case KeyEvent.VK_0:
 							
@@ -570,6 +552,26 @@ class Funcs extends Frame {
 					
 					switch (key) {
 						
+						case KeyEvent.VK_V:
+							
+							if (ke.isControlDown()) {
+								
+								try {
+									
+									if (clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
+										
+										rulestring += (String) clipboard.getData(DataFlavor.stringFlavor);
+										
+									}
+									
+								} catch (Exception e) {
+									
+								}
+								
+							}
+							
+							break;
+							
 						case KeyEvent.VK_ENTER:
 							
 							bconds = new int[117];
@@ -674,21 +676,7 @@ class Funcs extends Frame {
 							
 							rparse(rulestring);
 							
-							if (((ruletype != Ruletype.INT) && color) || (oldstatenum > statenum)) {
-								
-								for (int x = 0; x < 200; x++) {
-									
-									for (int y = 0; y < 200; y++) {
-										
-										if (world[y][x] > 1) world[y][x] = 1;
-										
-									}
-									
-								}
-								
-								color = false;
-								
-							}
+							postprocess();
 							
 							rulestring = "";
 							
@@ -726,7 +714,7 @@ class Funcs extends Frame {
 				
 				if (mode == Mode.SettingRule) {
 					
-					if (ke.getKeyChar() != 8) rulestring += ke.getKeyChar(); // Prevents 'delete' characters from being appended to the rulestring
+					if ((ke.getKeyChar() != 8) && (ke.getKeyChar() != 22)) rulestring += ke.getKeyChar(); // Prevents 'delete' characters from being appended to the rulestring
 					
 					if (tag) {
 						
@@ -1943,6 +1931,296 @@ class Funcs extends Frame {
 		}
 		
 		return rulestring;
+		
+	}
+	
+	void makeworld(String rle) {
+		
+		int n = 0;
+		
+		int m;
+		
+		int current = 0, bx = 0, by = 0;
+		
+		int run = 0;
+		
+		String rs = "";
+		
+		while (rle.charAt(n) == '#') {
+			
+			while (rle.charAt(n) != '\n') n++;
+			
+			n++;
+			
+		}
+		
+		outerloop:
+		
+		while (rle.charAt(n) != '\n') {
+			
+			if (rle.charAt(n) == 'r') {
+				
+				n += 3; // u, l, and e.
+				
+				while (rle.charAt(n) != '=') n++;
+				
+				if (rle.charAt(n + 1) == ' ') n++;
+				
+				n++;
+				
+				while (rle.charAt(n) != '\n') {
+					
+					rs += rle.charAt(n);
+					
+					n++;
+					
+				}
+				
+				rparse(rs);
+				
+				this.setTitle("NaiViewer (" + writerule() + ")");
+				
+				break outerloop;
+				
+			}
+			
+			n++;
+			
+		}
+		
+		n++;
+		
+		// Preprocessing
+		
+		m = n;
+		
+		for (; m < rle.length(); m++) {
+			
+			char c = rle.charAt(m);
+			
+			if (Character.isDigit(c)) {
+				
+				run *= 10;
+				
+				run += (c - '0');
+				
+			} else if (c == '$') {
+				
+				current += (run == 0) ? 1 : run;
+				
+				if (current > by) by = current;
+				
+				bx++;
+				
+				current = 0;
+				
+				run = 0;
+				
+			} else {
+				
+				current += (run == 0) ? 1 : run;
+				
+				if (current > by) by = current;
+				
+				run = 0;
+				
+			}
+				
+		}
+		
+		int bbx = ((this.cursor[0] + bx) <= 200) ? (this.cursor[0] + bx) : 200;
+		
+		int bby = ((this.cursor[1] + by) <= 200) ? (this.cursor[1] + by) : 200;
+		
+		for (int x = this.cursor[0]; x < bbx; x++) {
+			
+			for (int y = this.cursor[1]; y < bby; y++) {
+				
+				this.world[x][y] = 0;
+				
+			}
+			
+		}
+		
+		int x = this.cursor[0];
+		
+		int y = this.cursor[1];
+		
+		int r;
+		
+		run = 0;
+		
+		for (; n < rle.length(); n++) {
+			
+			char c = rle.charAt(n);
+			
+			if (Character.isDigit(c)) {
+				
+				run *= 10;
+				
+				run += (c - '0');
+				
+			} else if (c == '$') {
+				
+				x += (run == 0) ? 1 : run;
+				
+				x %= 200;
+				
+				y = this.cursor[1];
+				
+				run = 0;
+				
+			} else if (c == '.') {
+				
+				r = (run == 0) ? 1 : run;
+				
+				for (int nn = 0; nn < r; nn++) {
+					
+					this.world[x][y] = 0;
+					
+					y++;
+					
+					y %= 200;
+					
+				}
+				
+				run = 0;
+				
+			} else if (c == '!') {
+				
+				break;
+				
+			} else if (c == '#') {
+				
+				while (rle.charAt(n) != '\n') {
+					
+					c = rle.charAt(n);
+					
+					n++;
+					
+				}
+				
+			} else if (c == '\n') {
+				
+				continue;
+				
+			} else {
+				
+				r = (run == 0) ? 1 : run;
+				
+				if (c == 'b') {
+					
+					for (int nn = 0; nn < r; nn++) {
+						
+						this.world[x][y] = 0;
+						
+						y++;
+						
+						y %= 200;
+						
+					}
+					
+				} else if (c == 'o') {
+					
+					for (int nn = 0; nn < r; nn++) {
+						
+						this.world[x][y] = 1;
+						
+						y++;
+						
+						y %= 200;
+						
+					}
+					
+				} else {
+					
+					for (int nn = 0; nn < r; nn++) {
+						
+						this.world[x][y] = (c - 'A' + 1);
+						
+						y++;
+						
+						y %= 200;
+						
+					}
+					
+				}
+				
+				run = 0;
+				
+			}
+			
+		}
+		
+	}
+	
+	String makerle(int minx, int miny, int maxx, int maxy) {
+		
+		int run = 1, runtype = 0;
+		
+		String rle = "x = " + (maxy - miny) + ", y = " + (maxx - minx) + ", rule = " + writerule() + "\n";
+		
+		for (int x = minx; x < maxx; x++) {
+			
+			for (int y = miny; y < maxy; y++) {
+				
+				if (y == miny) runtype = this.world[x][y];
+				
+				else {
+					
+					if (this.world[x][y] == runtype) {
+						
+						run++;
+						
+					} else {
+						
+						if (run > 1) rle += run;
+						
+						if (runtype > 0) rle += (char) (runtype - 1 + 'A');
+						
+						else rle += '.';
+						
+						run = 1;
+						
+						runtype = this.world[x][y];
+						
+					}
+					
+				}
+				
+			}
+			
+			if (run > 1) rle += run;
+			
+			if (runtype > 0) rle += (char) (runtype - 1 + 'A');
+			
+			else rle += '.';
+			
+			run = 1;
+			
+			if (x == (maxx - 1)) rle += "!";
+			
+			else rle += "$";
+			
+		}
+		
+		return rle;
+		
+	}
+	
+	void postprocess() { // Prepare a world for simulation after the rule has been changed
+		
+		if (this.ruletype != Ruletype.INT) this.color = false;
+		
+		for (int x = 0; x < 200; x++) {
+			
+			for (int y = 0; y < 200; y++) {
+				
+				if (this.world[x][y] >= this.statenum) this.world[x][y] = this.statenum - 1;
+				
+			}
+			
+		}
 		
 	}
 	
