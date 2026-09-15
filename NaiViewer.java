@@ -132,13 +132,13 @@ class Funcs extends Frame {
 						    
 						    pattern = "";
 						    
-						    if ((minx == maxx) || (miny == maxy)) {
+						    if ((minx == maxx) || (miny == maxy) || ((minx + 1) == maxx) || ((miny + 1) == maxy)) {
 							    
 							    pattern = makerle(0, 0, 200, 200);
 							    
 							} else {
 								
-							    pattern = makerle(minx, miny, maxx, maxy);
+							    pattern = makerle(minx + 1, miny + 1, maxx, maxy);
 								
 							}
 							
@@ -150,7 +150,7 @@ class Funcs extends Frame {
 							
 						case KeyEvent.VK_I:
 						    
-						    if ((minx == maxx) || (miny == maxy)) {
+						    if ((minx == maxx) || (miny == maxy) || ((minx + 1) == maxx) || ((miny + 1) == maxy)) {
 							    
 							    for (int x = 0; x < 200; x++) {
 							        
@@ -164,9 +164,9 @@ class Funcs extends Frame {
 							    
 							} else {
 								
-							    for (int x = minx; x < maxx; x++) {
+							    for (int x = minx + 1; x < maxx; x++) {
 							        
-							        for (int y = miny; y < maxy; y++) {
+							        for (int y = miny + 1; y < maxy; y++) {
 							               
 							            world[x][y] = (world[x][y] == 0) ? 1 : 0;
 							            
@@ -216,7 +216,7 @@ class Funcs extends Frame {
 						    
 						    if ((ruletype == Ruletype.Deficient) || (ruletype == Ruletype.BSFKL)) c = 3;
 						    
-						    if ((minx == maxx) || (miny == maxy)) {
+						    if ((minx == maxx) || (miny == maxy) || ((minx + 1) == maxx) || ((miny + 1) == maxy)) {
 							    
 							    for (int x = 0; x < 200; x++) {
 							        
@@ -230,9 +230,9 @@ class Funcs extends Frame {
 							    
 							} else {
 								
-							    for (int x = minx; x < maxx; x++) {
+							    for (int x = minx + 1; x < maxx; x++) {
 							        
-							        for (int y = miny; y < maxy; y++) {
+							        for (int y = miny + 1; y < maxy; y++) {
 							               
 							            world[x][y] = random.nextInt(c);
 							            
@@ -282,25 +282,25 @@ class Funcs extends Frame {
 						    
 						    pattern = "";
 						    
-						    if ((minx == maxx) || (miny == maxy)) {
+						    if ((minx == maxx) || (miny == maxy) || ((minx + 1) == maxx) || ((miny + 1) == maxy)) {
 							    
 							    pattern = makerle(0, 0, 200, 200);
 							    
 							} else {
 								
-							    pattern = makerle(minx, miny, maxx, maxy);
+							    pattern = makerle(minx + 1, miny + 1, maxx, maxy);
 								
 							}
 						    
-						    if ((minx == maxx) || (miny == maxy)) {
+						    if ((minx == maxx) || (miny == maxy) || ((minx + 1) == maxx) || ((miny + 1) == maxy)) {
 							    
 							    world = new int[200][200];
 							    
 							} else {
 								
-							    for (int x = minx; x < maxx; x++) {
+							    for (int x = minx + 1; x < maxx; x++) {
 							        
-							        for (int y = miny; y < maxy; y++) {
+							        for (int y = miny + 1; y < maxy; y++) {
 							               
 							            world[x][y] = 0;
 							            
@@ -496,15 +496,15 @@ class Funcs extends Frame {
 						    
 						case KeyEvent.VK_BACK_SPACE:
 						    
-						    if ((minx == maxx) || (miny == maxy)) {
+						    if ((minx == maxx) || (miny == maxy) || ((minx + 1) == maxx) || ((miny + 1) == maxy)) {
 							    
 							    world = new int[200][200];
 							    
 							} else {
 								
-							    for (int x = minx; x < maxx; x++) {
+							    for (int x = minx + 1; x < maxx; x++) {
 							        
-							        for (int y = miny; y < maxy; y++) {
+							        for (int y = miny + 1; y < maxy; y++) {
 							               
 							            world[x][y] = 0;
 							            
@@ -1424,6 +1424,8 @@ class Funcs extends Frame {
 		
 		int[] limits = {1, 2, 6, 10, 13, 10, 6, 2, 1};
 		
+		processconds();
+		
 		if (this.naive) rulestring += "N";
 		
 		rulestring += "B";
@@ -2224,6 +2226,20 @@ class Funcs extends Frame {
 		
 	}
 	
+	void processconds() {
+		
+		if (this.ruletype == Ruletype.Deficient) {
+			
+			for (int n = 0; n < 117; n++) {
+				
+				if ((this.dconds[n] != 0) && (this.bconds[n] == 0)) this.dconds[n] = 0;
+				
+			}
+			
+		}
+		
+	}
+	
 	@Override
 	
 	public void update(Graphics g) {
@@ -2290,7 +2306,7 @@ class Funcs extends Frame {
 							
 							for (int y = 0; y < 200; y++) {
 								
-								if ((minx <= x) && (x < maxx) && (miny <= y) && (y < maxy)) {
+								if ((minx < x) && (x < maxx) && (miny < y) && (y < maxy)) {
 									
 									Color current = colors[this.world[x][y]];
 									
@@ -2324,7 +2340,7 @@ class Funcs extends Frame {
 						
 						for (int y = 0; y < 200; y++) {
 							
-							if ((minx <= x) && (x < maxx) && (miny <= y) && (y < maxy)) {
+							if ((minx < x) && (x < maxx) && (miny < y) && (y < maxy)) {
 								
 								Color current = gencolor(this.world[x][y]);
 								
@@ -2358,7 +2374,7 @@ class Funcs extends Frame {
 						
 						for (int y = 0; y < 200; y++) {
 							
-							if ((minx <= x) && (x < maxx) && (miny <= y) && (y < maxy)) {
+							if ((minx < x) && (x < maxx) && (miny < y) && (y < maxy)) {
 								
 								Color current = colors[this.world[x][y]];
 								
@@ -2392,7 +2408,7 @@ class Funcs extends Frame {
 						
 						for (int y = 0; y < 200; y++) {
 							
-							if ((minx <= x) && (x < maxx) && (miny <= y) && (y < maxy)) {
+							if ((minx < x) && (x < maxx) && (miny < y) && (y < maxy)) {
 								
 								Color current = colors[this.world[x][y]];
 								
@@ -2412,7 +2428,9 @@ class Funcs extends Frame {
 						
 					}
 					
-					g.setColor(avg(new Color(255, 0, 0), colors[this.world[this.cursor[0]][this.cursor[1]]]));
+					if (this.world[this.cursor[0]][this.cursor[1]] == 2) g.setColor(avg(new Color(0, 0, 255), colors[this.world[this.cursor[0]][this.cursor[1]]]));
+					
+					else g.setColor(avg(new Color(255, 0, 0), colors[this.world[this.cursor[0]][this.cursor[1]]]));
 					
 					g.fillRect(4 * this.cursor[1], 4 * this.cursor[0], 4, 4);
 					
